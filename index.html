@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      .pointerSetUp {
+        cursor: crosshair;
+      }
+
+      button {
+        background-color: white;
+        border: 2px solid red;
+        color: red;
+        font-weight: bold;
+        height: 50px;
+        width: 500px;
+        font-size: 30px;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+article {
+    margin: 50px auto;
+}
+
+      body {
+        margin: 50px 0 0 50px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 30px;
+        color: green;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <button onclick="location.reload()">Click to reload</button>
+    <br />
+    <article id="mainDraw"></article>
+  </body>
+</html>
+
+<script>
+  let gameEnded = false;
+  let xoCounter = 0;
+
+  class Cells {
+    constructor() {
+      this.size = "50px";
+      this.cellsNum = 10;
+      this.counter = 1;
+    }
+
+    draw() {
+      document.getElementById("mainDraw").innerHTML += `<div
+        class='pointerSetUp'
+        id=\"cellsNum${this.counter}\"
+        onclick=\"play(${this.counter})\"
+        style="
+          width: ${this.size};
+          height: ${this.size};
+          border: 1px solid black;
+          text-align: center;
+          padding: 10px 10px;
+          display: inline-block;
+        "
+      >&nbsp;</div>`;
+    }
+
+    drawTable() {
+      for (let i = 0; i < this.cellsNum; i++) {
+        for (let j = 0; j < this.cellsNum; j++) {
+          this.draw();
+          this.counter++;
+        }
+        document.getElementById("mainDraw").innerHTML += `<br>`;
+      }
+    }
+  }
+
+  let newCells = new Cells();
+  newCells.drawTable();
+
+  // Draw X or O in the table
+  function play(num) {
+    if (!gameEnded) {
+      if (document.getElementById(`cellsNum${num}`).innerHTML === "&nbsp;") {
+        if (xoCounter % 2 === 0) {
+          document.getElementById(`cellsNum${num}`).innerHTML = "X";
+          document.getElementById(`cellsNum${num}`).value = "X";
+          xoCounter++;
+        } else {
+          document.getElementById(`cellsNum${num}`).innerHTML = "O";
+          document.getElementById(`cellsNum${num}`).value = "O";
+          xoCounter++;
+        }
+      } else {
+        alert("CELL NOT EMPTY!");
+      }
+    }
+    winCheck();
+  }
+
+  // Check winning function
+  function winCheck() {
+    for (let i = 1; i <= newCells.cellsNum ** 2; i++) {
+      //   Horizontal wining condition
+      if (document.getElementById(`cellsNum${i}`).value) {
+        if (
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(`cellsNum${i + 1}`).value &&
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(`cellsNum${i + 2}`).value &&
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(`cellsNum${i + 3}`).value &&
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(`cellsNum${i + 4}`).value
+        ) {
+          if (xoCounter % 2 === 0) {
+            alert("PLAYER O WON!");
+          } else {
+            alert("PLAYER X WON!");
+          }
+          gameEnded = true;
+        } else if (
+          //   Vertical wining condition
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(`cellsNum${i + newCells.cellsNum}`).value &&
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(`cellsNum${i + newCells.cellsNum * 2}`)
+              .value &&
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(`cellsNum${i + newCells.cellsNum * 3}`)
+              .value &&
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(`cellsNum${i + newCells.cellsNum * 4}`)
+              .value
+        ) {
+          if (xoCounter % 2 === 0) {
+            alert("PLAYER O WON!");
+          } else {
+            alert("PLAYER X WON!");
+          }
+          gameEnded = true;
+        } else if (
+          //   From left Diagonal wining condition
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(
+              `cellsNum${i + (newCells.cellsNum + 1) * 1}`
+            ).value &&
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(
+              `cellsNum${i + (newCells.cellsNum + 1) * 2}`
+            ).value &&
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(
+              `cellsNum${i + (newCells.cellsNum + 1) * 3}`
+            ).value &&
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(
+              `cellsNum${i + (newCells.cellsNum + 1) * 4}`
+            ).value
+        ) {
+          if (xoCounter % 2 === 0) {
+            alert("PLAYER O WON!");
+          } else {
+            alert("PLAYER X WON!");
+          }
+          gameEnded = true;
+        } else if (
+          //   From right Diagonal wining condition
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(
+              `cellsNum${i + (newCells.cellsNum - 1) * 1}`
+            ).value &&
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(
+              `cellsNum${i + (newCells.cellsNum - 1) * 2}`
+            ).value &&
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(
+              `cellsNum${i + (newCells.cellsNum - 1) * 3}`
+            ).value &&
+          document.getElementById(`cellsNum${i}`).value ===
+            document.getElementById(
+              `cellsNum${i + (newCells.cellsNum - 1) * 4}`
+            ).value
+        ) {
+          if (xoCounter % 2 === 0) {
+            alert("PLAYER O WON!");
+          } else {
+            alert("PLAYER X WON!");
+          }
+          gameEnded = true;
+        }
+      }
+    }
+  }
+</script>
